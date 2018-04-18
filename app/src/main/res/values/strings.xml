@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ProjetRevaMuseum</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+
+    <string-array name="items">
+        <item>tympan</item>
+        <item>ganesha</item>
+
+    </string-array>
+    <string name="title_activity_main4">Main4Activity</string>
+    <string name="ErreurTAG">Code NFC non reconnu</string>
+    <string name="NFCScanInstructions">Place the device on the NFC tag</string>
+    <string name="Or">Or</string>
+    <string name="SeePlan">Watch museum Map</string>
+    <string name="SeeDescription">Museum Description</string>
+    <string name="SeeHistory">NFC Tags History</string>
+    <string name="MuseumDescriptionTitle">Museum Description</string>
+    <string name="ComingSoon">Coming soon</string>
+</resources>

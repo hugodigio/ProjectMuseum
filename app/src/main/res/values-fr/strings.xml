@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NFCScanInstructions">Placez l\'appareil sur un tag NFC</string>
+    <string name="Or">Ou</string>
+    <string name="SeePlan">Voir le plan du musée</string>
+    <string name="SeeDescription">Description du musée</string>
+    <string name="SeeHistory">Historique des Tags NFC</string>
+    <string name="MuseumDescriptionTitle">Description du musée</string>
+    <string name="ComingSoon">Coming soon</string>
+</resources>

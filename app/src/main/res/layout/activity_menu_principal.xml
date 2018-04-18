@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    tools:context=".MenuPrincipal"
+    android:background="@color/colorPrimary">
+    <TextView
+        android:id="@+id/NFCScanInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20sp"
+        android:textAlignment="center"
+        android:textColor="@color/MainMenuTextColor"
+        android:textSize="30sp"
+        android:text="@string/NFCScanInstructions" />
+
+    <ImageView
+        android:id="@+id/MainMenuImage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/nfc_logo"
+        app:layout_constraintTop_toBottomOf="@+id/NFCScanInstructions" />
+    <TextView
+        android:id="@+id/MainMenuOr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Or"
+        android:textColor="@color/MainMenuTextColor"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@id/MainMenuImage"
+        android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/MainMenuSeePlan"
+        android:layout_width="match_parent"
+        android:layout_height="80sp"
+        android:text="@string/SeePlan"
+        app:layout_constraintBottom_toTopOf="@id/MainMenuSeeDescription" />
+    <Button
+        android:id="@+id/MainMenuSeeDescription"
+        android:layout_width="0sp"
+        android:layout_height="80sp"
+        app:layout_constraintWidth_percent="0.5"
+        android:text="@string/SeeDescription"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+        android:id="@+id/MainMenuHistory"
+        android:layout_width="0sp"
+        android:layout_height="80sp"
+        app:layout_constraintWidth_percent="0.5"
+        android:text="@string/SeeHistory"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/MainMenuSeeDescription"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
