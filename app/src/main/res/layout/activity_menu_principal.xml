@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    tools:context=".MenuPrincipal"
+    tools:context=".activities.MenuPrincipal"
     android:background="@color/colorPrimary">
+
+    <!-- Texte et image NFC -->
     <TextView
         android:id="@+id/NFCScanInstructions"
         android:layout_width="match_parent"
@@ -25,16 +27,37 @@
         android:scaleType="fitCenter"
         android:src="@drawable/nfc_logo"
         app:layout_constraintTop_toBottomOf="@+id/NFCScanInstructions" />
-    <TextView
-        android:id="@+id/MainMenuOr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Or"
-        android:textColor="@color/MainMenuTextColor"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@id/MainMenuImage"
-        android:textAlignment="center"/>
 
+    <!-- Ou -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            app:layout_constraintTop_toTopOf="@id/MainMenuOr"
+            android:layout_marginTop="25dp"
+            android:background="@color/MainMenuTextColor"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/MainMenuOr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/Or"
+            android:textColor="@color/MainMenuTextColor"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:background="@color/colorPrimary"/>
+
+    </RelativeLayout>
+
+    <!-- Boutons du menu -->
     <Button
         android:id="@+id/MainMenuSeePlan"
         android:layout_width="match_parent"
@@ -57,6 +80,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/MainMenuSeeDescription"
         />
-
 
 </android.support.constraint.ConstraintLayout>

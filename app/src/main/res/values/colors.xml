@@ -2,6 +2,6 @@
 <resources>
     <color name="colorPrimary">#009cdd</color>
     <color name="colorPrimaryDark">#004a75</color>
-    <color name="colorAccent">#9c9c9c</color>
+    <color name="colorAccent">#191919</color>
     <color name="MainMenuTextColor">#FFFFFF</color>
 </resources>

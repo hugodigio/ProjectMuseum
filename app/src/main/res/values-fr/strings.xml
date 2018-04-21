@@ -7,4 +7,11 @@
     <string name="SeeHistory">Historique des Tags NFC</string>
     <string name="MuseumDescriptionTitle">Description du musée</string>
     <string name="ComingSoon">Coming soon</string>
+    <string name="NoNFC">Cet appareil ne supporte pas le NFC.</string>
+    <string name="checkDirectoryTitle">Application non opérationelle</string>
+    <string name="RepertoireInexistant">Le répertoire de l\'Application n\'existe pas. Il sera créé après avoir cliqué sur le bouton OK.</string>
+    <string name="ExplicationFermeture">Vous devez ajouter des ressources dans le répertoire de l\'application avant d\'utiliser cette application. L\'application se fermera après avoir cliqué sur le bouton OK.</string>
+    <string name="RepertoireVide">Le répertoire de l\application est vite. Aucune Ressource détécté.</string>
+    <string name="closeApp">Fermer l\'application</string>
+    <string name="AucuneDescription">No Description detected.</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
+import polytech.projetrevamuseum.activities.Main2Activity;
 import polytech.projetrevamuseum.min3d.core.Object3dContainer;
 import polytech.projetrevamuseum.min3d.core.RendererActivity;
 import polytech.projetrevamuseum.min3d.parser.IParser;
