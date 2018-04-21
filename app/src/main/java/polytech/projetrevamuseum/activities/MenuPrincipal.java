@@ -58,24 +58,14 @@ public class MenuPrincipal extends AppCompatActivity {
 
         //Listener des boutons
         ButtonPlan.setOnClickListener(new listenerBoutonPlan());
-        ButtonDescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),R.string.ComingSoon,Toast.LENGTH_SHORT).show();
-            }
-        });
-        ButtonHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),R.string.ComingSoon,Toast.LENGTH_SHORT).show();
-            }
-        });
+        ButtonDescription.setOnClickListener(new listenerBoutonDescription());
+        ButtonHistory.setOnClickListener(new listenerBoutonHistorique());
 
 
     }
 
 
-    /* --------------------- LISTENER DS BOUTONS DU MENU ----------------------------------------*/
+    /* --------------------- LISTENER DES BOUTONS DU MENU ----------------------------------------*/
 
     /**
      * Classe pour gerer l'evenement lors du clic sur le bouton "voir plan du musée"
@@ -95,26 +85,32 @@ public class MenuPrincipal extends AppCompatActivity {
     private class listenerBoutonDescription implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            checkAppDirectory();
             boolean found = false;
-            if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-                // Le périphérique de stockage externe existe (carte SD/cleUSB)
-                File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
-                File fichier;
-                for(String File : dossier.list()){
-                    if(!found && (File.equals("Description.html") || File.equals("description.html"))){
-                        found = true;
-                        fichier = new File(dossier.getPath()+File);
+            if(!DirectoryEmpty){
+                if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+                    // Le périphérique de stockage externe existe (carte SD/cleUSB)
+                    File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
+                    File fichier = null;
+                    for(File File : dossier.listFiles()){
+                        if(!found && (File.getName().equals("Description.html") || File.getName().equals("description.html"))){
+                            found = true;
+                            fichier = new File(dossier.getPath()+File);
+                        }
                     }
+                    if(found){
+                        Intent intent = new Intent(getApplicationContext(), Description.class);
+                        //envoyer donnée a l'activité description
+                        intent.putExtra("cheminDescription", fichier.getName());
+                        intent.putExtra("directoryName", DirectoryName);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(),getString(R.string.AucuneDescription),Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    // Le périphérique n'existe pas ou on ne peut ecrire dessus
+                    Toast.makeText(getApplicationContext(),"Erreur: Aucune memoire externe detectée",Toast.LENGTH_LONG).show();
                 }
-                if(found){
-                    Intent intent = new Intent(getApplicationContext(), Plan.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(),getString(R.string.AucuneDescription),Toast.LENGTH_SHORT).show();
-                }
-            }else{
-                // Le périphérique n'existe pas ou on ne peut ecrire dessus
-                Toast.makeText(getApplicationContext(),"Erreur: Aucune memoire externe detectée",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -165,7 +161,7 @@ public class MenuPrincipal extends AppCompatActivity {
             // Le périphérique de stockage externe existe (carte SD/cleUSB)
             File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
             if(dossier.exists() && dossier.isDirectory()) DirectoryExist = true;
-                if(dossier.list() != null) DirectoryEmpty = false;
+                if(dossier.listFiles().length != 0) DirectoryEmpty = false;
             Log.d("checkAppDirectory", "exist:"+DirectoryExist+" empty: "+DirectoryEmpty);
         }else{
             // Le périphérique n'existe pas ou on ne peut ecrire dessus
@@ -185,7 +181,6 @@ public class MenuPrincipal extends AppCompatActivity {
                     .setTitle(getString(R.string.checkDirectoryTitle))
                     .setPositiveButton(R.string.closeApp, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Log.d("checkAppDirectory","Dossier cree, DirectExist:"+DirectoryExist);
                             if(!DirectoryExist){
                                 if(!new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName).mkdirs()) Log.d("checkAppDirectory","pas cree");
                             }

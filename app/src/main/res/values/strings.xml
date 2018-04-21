@@ -31,4 +31,6 @@
     <string name="Ok">Ok</string>
     <string name="closeApp">Close App</string>
     <string name="AucuneDescription">No Description detected.</string>
+    <string name="DescriptionTitle">Museum Description</string>
+    <string name="planTitle">Museum map</string>
 </resources>
