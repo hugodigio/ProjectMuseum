@@ -37,7 +37,7 @@ public class Main2Activity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Intent intent = getIntent();
-        identity = intent.getStringExtra(Plan.EXTRA_MESSAGE);
+        //identity = intent.getStringExtra(Plan.EXTRA_MESSAGE);
         Toast.makeText(this, identity, Toast.LENGTH_SHORT).show();
 
         ImageButton imgBut = (ImageButton) findViewById(R.id.imageButton3);

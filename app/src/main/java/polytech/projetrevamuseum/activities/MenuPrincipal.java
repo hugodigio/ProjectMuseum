@@ -73,8 +73,9 @@ public class MenuPrincipal extends AppCompatActivity {
     private class listenerBoutonPlan implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            //on verifie si il a un plan disponible
             Intent intent = new Intent(getApplicationContext(), Plan.class);
+            //envoyer donnée a l'activité description
+            intent.putExtra("directoryName", DirectoryName);
             startActivity(intent);
         }
     }
@@ -121,8 +122,7 @@ public class MenuPrincipal extends AppCompatActivity {
     private class listenerBoutonHistorique implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(), Plan.class);
-            startActivity(intent);
+            Toast.makeText(getApplicationContext(),R.string.ComingSoon,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,7 +161,7 @@ public class MenuPrincipal extends AppCompatActivity {
             // Le périphérique de stockage externe existe (carte SD/cleUSB)
             File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
             if(dossier.exists() && dossier.isDirectory()) DirectoryExist = true;
-                if(dossier.listFiles().length != 0) DirectoryEmpty = false;
+                if(dossier.listFiles() != null) if(dossier.listFiles().length != 0) DirectoryEmpty = false;
             Log.d("checkAppDirectory", "exist:"+DirectoryExist+" empty: "+DirectoryEmpty);
         }else{
             // Le périphérique n'existe pas ou on ne peut ecrire dessus
@@ -200,6 +200,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
     @Override
     protected void onResume() { //permet a l'app de capturer les interruption nfc a la place du systeme
+        checkAppDirectory();
         super.onResume();
         Intent intent = new Intent(this, MenuPrincipal.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -256,4 +257,6 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
     // ------------------------------------- END NFC ZONE ----------------------------------------------
+
 }
+
