@@ -205,13 +205,13 @@ public class MenuPrincipal extends AppCompatActivity {
         Intent intent = new Intent(this, MenuPrincipal.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         IntentFilter[] intentFilters = new IntentFilter[]{};
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
+//        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
     }
 
     @Override
     protected void onPause() {  //rend la main au systeme pour la puce nfc
         super.onPause();
-        nfcAdapter.disableForegroundDispatch(this);
+        //nfcAdapter.disableForegroundDispatch(this);
     }
 
 
