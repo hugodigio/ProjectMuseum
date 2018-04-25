@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ProjectMuseumGit.iml" filepath="$PROJECT_DIR$/ProjectMuseumGit.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProjetRevaMuseum.iml" filepath="$PROJECT_DIR$/ProjetRevaMuseum.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
