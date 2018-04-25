@@ -13,18 +13,7 @@
     tools:layout_editor_absoluteY="89dp"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/MuseumDescriptionTitle"
-        android:textAlignment="center"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="5dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,15 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="73dp" />
 
             <ImageView
                 android:id="@+id/imageView2"

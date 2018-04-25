@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjetRevaMuseum</string>
+    <string name="app_name">Projet Reva Museum</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -25,10 +25,13 @@
     <string name="ComingSoon">Coming soon</string>
     <string name="NoNFC">Your device don\'t support NFC</string>
     <string name="checkDirectoryTitle">Non-operational application</string>
-    <string name="RepertoireInexistant">App Directory does not exist. It will be created after you click on OK button.</string>
+    <string name="RepertoireInexistant">App Directory does not exist. It will be created after you click on \"Close App\" button.</string>
     <string name="RepertoireVide">App Directory is empty. No ressources detected.</string>
-    <string name="ExplicationFermeture">You must add ressources in the App directory before use this application. Application will close after you clic on OK button.</string>
-    <string name="Ok">Ok</string>
+    <string name="ExplicationFermeture">You must add ressources in the App directory before use this application.</string>
+    <string name="Ok">OK</string>
     <string name="closeApp">Close App</string>
     <string name="AucuneDescription">No Description detected.</string>
+    <string name="DescriptionTitle">Museum Description</string>
+    <string name="planTitle">Museum map</string>
+    <string name="MainMenu">Main Menu</string>
 </resources>
