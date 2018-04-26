@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NFC tools for ProjectMuseum</string>
+    <string name="NoNFCDetected">No NFC detected</string>
+    <string name="NoNFCDetectedMessage">Your device don\'t have NFC support. You can\'t use your device with this application.</string>
+    <string name="CloseApp">Close the app</string>
+    <string name="NFCDisabled">NFC is disabled</string>
+    <string name="NFCDisabledMessage">NFC is disabled. Please enable NFC in system preferences.</string>
+    <string name="GoNFCSettings">Go to NFC settings</string>
 </resources>
