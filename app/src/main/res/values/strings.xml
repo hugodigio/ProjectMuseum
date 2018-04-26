@@ -6,4 +6,6 @@
     <string name="NFCDisabled">NFC is disabled</string>
     <string name="NFCDisabledMessage">NFC is disabled. Please enable NFC in system preferences.</string>
     <string name="GoNFCSettings">Go to NFC settings</string>
+    <string name="WelcomeMessage">Please scan the NFC tag you want to associate with a piece of Art.</string>
+    <string name="IDofTag">ID of Scanned NFC TAG:</string>
 </resources>

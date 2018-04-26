@@ -4,21 +4,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
-import android.os.Environment;
+import android.nfc.Tag;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
 
 public class ScanMenu extends AppCompatActivity {
 
     //est une classe qui permet de faire l'interface avec la puce NFC
     NfcAdapter AdapterNFC;
-    TextView textStatusNFC;
+    TextView idTagTextView;
 
     //constantes
     final static int NFC_MISSING  = 1;
@@ -31,8 +28,7 @@ public class ScanMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_menu);
-
-        textStatusNFC = findViewById(R.id.textStatusNFC);
+        idTagTextView = findViewById(R.id.IDnfcTag);
 
         NFCinit();
 
@@ -47,6 +43,8 @@ public class ScanMenu extends AppCompatActivity {
 
         //on verifie si le NFC est toujours disponible
         NFCinit();
+
+        NFCreadingIntent();
 
     }
 
@@ -120,5 +118,25 @@ public class ScanMenu extends AppCompatActivity {
         builder.show();
     }
 
+    private void NFCreadingIntent() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
 
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            if(tag == null){
+                idTagTextView.setText("tag == null");
+            }else{
+
+                StringBuilder tagInfo = new StringBuilder();
+                byte[] tagId = tag.getId();
+                for(int i=0; i<tagId.length; i++){
+                    tagInfo.append(Integer.toHexString(tagId[i] & 0xFF)).append(" ");
+                }
+
+                idTagTextView.setText(tagInfo.toString());
+            }
+        }
+
+    }
 }

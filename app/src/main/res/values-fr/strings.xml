@@ -6,4 +6,6 @@
     <string name="NFCDisabled">NFC desactivé</string>
     <string name="NFCDisabledMessage">Le NFC est desactivé. Activez le NFC dans les paramètres de l\'appareil</string>
     <string name="GoNFCSettings">Ouvrir paramètres NFC</string>
+    <string name="WelcomeMessage">Scannez le Tag NFC que vous voulez associer à une oeuvre.</string>
+    <string name="IDofTag">ID du TAG NFC scanné:</string>
 </resources>
