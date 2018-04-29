@@ -8,4 +8,18 @@
     <string name="GoNFCSettings">Ouvrir paramètres NFC</string>
     <string name="WelcomeMessage">Scannez le Tag NFC que vous voulez associer à une oeuvre.</string>
     <string name="IDofTag">ID du TAG NFC scanné:</string>
+    <string name="IDFound">TAG déjà existant</string>
+    <string name="IDFoundMessage">Le Tag que vous avez scanné est déjà associé à une oeuvre de l\'application \"ProjectMuseum\"</string>
+    <string name="AskWhatToDo">Que voulez-vous faire ?</string>
+    <string name="IDReplace">Modifier</string>
+    <string name="Delete">Suprimer</string>
+    <string name="DoNothing">Ne rien faire</string>
+    <string name="addTag">Associer ce TAG à une oeuvre</string>
+    <string name="EditTagInstructions">Selectionnez la nouvelle oeuvre associée à ce TAG</string>
+    <string name="AddTagInstructions">Selectionnez l\'oeuvre que vous voulez associer à ce tag</string>
+    <string name="TAGdeleted">TAG supprimé</string>
+    <string name="checkDirectoryTitle">Application non opérationelle</string>
+    <string name="RepertoireInexistant">Le répertoire de l\'Application n\'existe pas. Il sera créé après avoir cliqué sur le bouton \"Fermer l\'application\".</string>
+    <string name="ExplicationFermeture">Vous devez ajouter des ressources dans le répertoire de l\'application avant d\'utiliser cette application.</string>
+    <string name="closeApp">Fermer l\'application</string>
 </resources>

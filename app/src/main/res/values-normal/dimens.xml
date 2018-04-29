@@ -10,4 +10,5 @@
     <dimen name="policetitres">20sp</dimen>
     <dimen name="marginTagZone">10dp</dimen>
     <dimen name="paddingtopTitle">30dp</dimen>
+    <dimen name="marginBottom">130sp</dimen>
 </resources>
