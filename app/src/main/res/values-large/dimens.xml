@@ -11,4 +11,5 @@
     <dimen name="marginTagZone">100dp</dimen>
     <dimen name="paddingtopTitle">80dp</dimen>
     <dimen name="marginBottom">150sp</dimen>
+    <dimen name="normalTextSize">16sp</dimen>
 </resources>

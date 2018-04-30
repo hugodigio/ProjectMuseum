@@ -22,4 +22,8 @@
     <string name="RepertoireInexistant">App Directory does not exist. It will be created after you click on \"Close App\" button.</string>
     <string name="ExplicationFermeture">You must add ressources in the App directory before use this application.</string>
     <string name="closeApp">Close App</string>
+    <string name="AllArts">Afficher toutes les oeuvres</string>
+    <string name="UnTaggedArts">Oeuvres non tagués</string>
+    <string name="AllArtsType">All arts:</string>
+    <string name="UnTaggedArtsType">Untagged arts only:</string>
 </resources>

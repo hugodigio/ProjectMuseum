@@ -54,11 +54,11 @@ public class ScanMenu extends AppCompatActivity {
         buttonAdd = findViewById(R.id.boutonAdd);
         tagManager = new TagManager(PROJETCTMUSEUM_DIRECTORY);
 
-        if(checkAppDirectory()){
-            askForPermission();
 
-            NFCinit();
-        }
+        askForPermission();
+        checkAppDirectory();
+        NFCinit();
+
     }
 
     /**
@@ -250,18 +250,39 @@ public class ScanMenu extends AppCompatActivity {
      */
     private String NFCreadingIntent(Intent intent) {
         String action = intent.getAction();
+        Log.d("(ScanMenu)","intent capturé, action:"+action);
         StringBuilder idTag = new StringBuilder();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            Log.d("(ScanMenu)","Action du TAG capturée");
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if(tag == null){
                 idTagTextView.setText("tag == null");
             }else{
+
                 byte[] tagId = tag.getId();
                 for(int i=0; i<tagId.length; i++){
                     idTag.append(Integer.toHexString(tagId[i] & 0xFF)).append(" ");
                 }
                 //supprimer l'espace en trop
                 idTag.delete(idTag.length()-1,idTag.length());
+
+                /* ------------ DEBUG TAG ------------*/
+                        StringBuilder tagDebug = new StringBuilder();
+                        tagDebug.append(tag.toString() + "\n");
+
+                        tagDebug.append("\nTag Id: \n");
+                        tagDebug.append(idTag);
+                        tagDebug.append("\n");
+
+                        String[] techList = tag.getTechList();
+                        tagDebug.append("\nTech List\n");
+                        tagDebug.append("length = " + techList.length +"\n");
+                        for(int i=0; i<techList.length; i++){
+                            tagDebug.append(techList[i] + "\n ");
+                        }
+
+                        Log.d("(ScanMenu)","information de Tag"+"\n"+tagDebug.toString());
+                /* ---------- FIN DEBUG TAG -----------*/
 
 
             }

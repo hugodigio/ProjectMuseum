@@ -14,8 +14,13 @@ import java.io.File;
 public class AddModifyTag extends AppCompatActivity {
 
     TextView instructions;
+    TextView listType;
     LinearLayout buttonLayout;
+    Button buttonAllArts;
+    Button buttonUntaggedArts;
     TagManager tagManager;
+
+
 
     String tagID;
     File artDirectory;
@@ -26,7 +31,11 @@ public class AddModifyTag extends AppCompatActivity {
         setContentView(R.layout.activity_add_modify_tag);
 
         instructions = findViewById(R.id.instructions);
+        listType = findViewById(R.id.ListType);
         buttonLayout = findViewById(R.id.ButtonLayout);
+        buttonAllArts = findViewById(R.id.AllArts);
+        buttonUntaggedArts = findViewById(R.id.UntaggedArt);
+
         tagManager = new TagManager(getIntent().getExtras().getString("DirectoryName","defaultKey"));
 
         tagID = getIntent().getExtras().getString("tagID","defaultKey");
@@ -39,7 +48,32 @@ public class AddModifyTag extends AppCompatActivity {
         } else {
             instructions.setText(getString(R.string.AddTagInstructions));
         }
+        showAllArts();
 
+
+        buttonAllArts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteButtons();
+                showAllArts();
+            }
+        });
+
+        buttonUntaggedArts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteButtons();
+                showUntaggedArts();
+            }
+        });
+    }
+
+    private void deleteButtons() {
+        buttonLayout.removeAllViews();
+    }
+
+    private void showAllArts() {
+        listType.setText(R.string.AllArtsType);
         for(final File oeuvre : tagManager.getAllArts()){
             Button oeuvreBtn = new Button(this);
             oeuvreBtn.setText(oeuvre.getName());
@@ -47,7 +81,7 @@ public class AddModifyTag extends AppCompatActivity {
             oeuvreBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(artDirectoryString != null){
+                    if(artDirectory != null){
                         //si nous modifions un tag existant
                         tagManager.deleteTAG(artDirectory);
                     }
@@ -59,9 +93,28 @@ public class AddModifyTag extends AppCompatActivity {
             });
             buttonLayout.addView(oeuvreBtn);
         }
+    }
+
+    private void showUntaggedArts() {
+        listType.setText(R.string.UnTaggedArtsType);
+        for(final File oeuvre : tagManager.getUntaggedArts()){
+            Button oeuvreBtn = new Button(this);
+            oeuvreBtn.setText(oeuvre.getName());
+            oeuvreBtn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            oeuvreBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(artDirectory != null){
+                        //si nous modifions un tag existant
+                        tagManager.deleteTAG(artDirectory);
+                    }
+                    tagManager.addTAG(oeuvre,tagID);
 
 
-
-
+                    finish();
+                }
+            });
+            buttonLayout.addView(oeuvreBtn);
+        }
     }
 }
