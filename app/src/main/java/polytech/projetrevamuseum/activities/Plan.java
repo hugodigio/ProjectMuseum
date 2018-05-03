@@ -2,14 +2,18 @@ package polytech.projetrevamuseum.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +32,7 @@ public class Plan extends AppCompatActivity {
 
     LinearLayout ButtonLayout;
     ImageView image;
+    Boolean emptyImage = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +66,19 @@ public class Plan extends AppCompatActivity {
         }
     }
 
-    public void addBouton(String ButtonName, File ImageSrc){
-        Button button = null;
+    public void addBouton(String ButtonName, final File ImageSrc){
+        Button button = new Button(this);
+        //button.setLayoutParams(new LinearLayout.LayoutParams());
         button.setText(ButtonName);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                image.setImageURI(Uri.parse(ImageSrc.getAbsolutePath()));
             }
         });
+        if(emptyImage){
+            image.setImageURI(Uri.parse(ImageSrc.getAbsolutePath()));
+        }
         ButtonLayout.addView(button);
     }
 

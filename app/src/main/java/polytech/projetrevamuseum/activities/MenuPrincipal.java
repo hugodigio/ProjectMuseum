@@ -203,8 +203,8 @@ public class MenuPrincipal extends AppCompatActivity {
 
     @Override
     protected void onResume() { //permet a l'app de capturer les interruption nfc a la place du systeme
-        checkAppDirectory();
         super.onResume();
+        checkAppDirectory();
         Intent intent = new Intent(this, MenuPrincipal.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         IntentFilter[] intentFilters = new IntentFilter[]{};
@@ -319,7 +319,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
     public String getTextFromNdefRecord(Intent intent){ //Renvoi le contenu texte de la puce nfc
         String tagContent = null;
-        Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG);
         if(parcelables == null){
             Log.e("getTextFromNdefRecord", "Erreur lors de la lecture du tag NFC");
         }else{
