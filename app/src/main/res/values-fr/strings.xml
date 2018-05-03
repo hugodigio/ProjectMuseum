@@ -17,4 +17,12 @@
     <string name="DescriptionTitle">Description du musée</string>
     <string name="planTitle">Plan du musée</string>
     <string name="MainMenu">Menu Principal</string>
+
+    <!-- NFCDialog -->
+    <string name="NoNFCDetected">Pas de NFC détecté</string>
+    <string name="NoNFCDetectedMessage">Votre appareil ne prend pas en charge le NFC. Vous ne pouvez pas utiliser cette application avec votre appareil.</string>
+    <string name="CloseApp">Fermer l\'application</string>
+    <string name="NFCDisabled">NFC desactivé</string>
+    <string name="NFCDisabledMessage">Le NFC est desactivé. Activez le NFC dans les paramètres de l\'appareil</string>
+    <string name="GoNFCSettings">Ouvrir paramètres NFC</string>
 </resources>

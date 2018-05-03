@@ -13,6 +13,7 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,22 +31,24 @@ import polytech.projetrevamuseum.R;
 import static android.os.Environment.getExternalStorageDirectory;
 
 public class MenuPrincipal extends AppCompatActivity {
-    private NfcAdapter nfcAdapter;
+    private NfcAdapter adapterNFC;
 
     boolean DirectoryExist = false;
     boolean DirectoryEmpty = true;
     String  DirectoryName = "ProjectMuseum";
+
+    Boolean nfcReady = false;
+
+    //Pour la fonction qui cree les boites de dialogue
+    final static int NFC_MISSING  = 1;
+    final static int NFC_DISABLED = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
-        // NFC
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if(nfcAdapter == null){
-            Toast.makeText(MenuPrincipal.this, R.string.NoNFC, Toast.LENGTH_LONG).show();
-        }
+        NFCinit();
 
         //Boutons du menu principal
         Button ButtonPlan = findViewById(R.id.MainMenuSeePlan);
@@ -205,7 +208,9 @@ public class MenuPrincipal extends AppCompatActivity {
         Intent intent = new Intent(this, MenuPrincipal.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         IntentFilter[] intentFilters = new IntentFilter[]{};
-//        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
+        if(nfcReady){
+            adapterNFC.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
+        }
     }
 
     @Override
@@ -214,7 +219,89 @@ public class MenuPrincipal extends AppCompatActivity {
         //nfcAdapter.disableForegroundDispatch(this);
     }
 
+    /**
+     * Initialise la classe qui fait la relation avec la puce NFC, et vérifie si le NFC est présent
+     * sur cet appareil ou si il est acivé.
+     */
+    private void NFCinit(){
+        //récupere les information de la puce NFC
+        adapterNFC = NfcAdapter.getDefaultAdapter(this);
 
+        //test la presence du NFC ou son activation
+        if(adapterNFC == null){
+            nfcReady = false;
+            //NFC absent sur l'appareil
+            Toast.makeText(getApplicationContext(),R.string.NoNFC, Toast.LENGTH_SHORT).show();
+            NFCDialog(NFC_MISSING);
+        } else if(!adapterNFC.isEnabled()){
+            nfcReady = false;
+            //NFC present mais desactivé. Ouvre les parametres de l'appareil
+            NFCDialog(NFC_DISABLED);
+        } else {
+            nfcReady = true;
+        }
+    }
+
+
+    private void NFCDialog(final int error){
+        NFCDialog(error, null, null);
+    }
+    /**
+     * Classe qui affiche une boite de dialogue a l'utilisateur en fonction du contexte rencontrée
+     * @param error erreur rencontrée
+     * @return retourne un identifiant pouvant etre interpreté
+     */
+    private void NFCDialog(final int error, final File artDirectory, final String tagID){
+        String title = "";
+        String message = "";
+        String positiveButton = "";
+        String negativeButton = "";
+        String neutralButton  = "";
+        AlertDialog.Builder Dialog;
+
+
+        //on cree le message de l'erreur
+        switch (error){
+            case NFC_MISSING:
+                title = getString(R.string.NoNFCDetected);
+                message = getString(R.string.NoNFCDetectedMessage);
+                positiveButton = getString(R.string.CloseApp);
+                break;
+            case NFC_DISABLED:
+                title = getString(R.string.NFCDisabled);
+                message = getString(R.string.NFCDisabledMessage);
+                positiveButton = getString(R.string.GoNFCSettings);
+                break;
+        }
+
+        //creation et affichage de la boite de dialogue
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setTitle(title);
+        switch(error){
+            case NFC_MISSING:
+                builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+                builder.setCancelable(false);
+                break;
+            case NFC_DISABLED:
+                builder.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent GoSettings = new Intent(Settings.ACTION_NFC_SETTINGS);
+                        startActivity(GoSettings);
+                    }
+                });
+                builder.setCancelable(false);
+                break;
+        }
+        builder.show();
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
