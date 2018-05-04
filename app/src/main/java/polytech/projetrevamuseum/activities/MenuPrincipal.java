@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -26,16 +27,19 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 
+import polytech.projetrevamuseum.ContenuOeuvre;
 import polytech.projetrevamuseum.R;
+import polytech.projetrevamuseum.TagManager;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
 public class MenuPrincipal extends AppCompatActivity {
     private NfcAdapter adapterNFC;
+    TagManager tagManager;
 
     boolean DirectoryExist = false;
     boolean DirectoryEmpty = true;
-    String  DirectoryName = "ProjectMuseum";
+    final String DIRECTORYNAME = "ProjectMuseum";
 
     Boolean nfcReady = false;
 
@@ -59,6 +63,9 @@ public class MenuPrincipal extends AppCompatActivity {
         askForPermission();
         checkAppDirectory();
 
+        //on utilise la classe TagManager que l'on a cree, elle prend en paramètre le dossier de l'application
+        tagManager = new TagManager(DIRECTORYNAME);
+
         //Listener des boutons
         ButtonPlan.setOnClickListener(new listenerBoutonPlan());
         ButtonDescription.setOnClickListener(new listenerBoutonDescription());
@@ -78,7 +85,7 @@ public class MenuPrincipal extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = new Intent(getApplicationContext(), Plan.class);
             //envoyer donnée a l'activité description
-            intent.putExtra("directoryName", DirectoryName);
+            intent.putExtra("directoryName", DIRECTORYNAME);
             startActivity(intent);
         }
     }
@@ -94,7 +101,7 @@ public class MenuPrincipal extends AppCompatActivity {
             if(!DirectoryEmpty){
                 if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
                     // Le périphérique de stockage externe existe (carte SD/cleUSB)
-                    File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
+                    File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DIRECTORYNAME);
                     File fichier = null;
                     for(File File : dossier.listFiles()){
                         if(!found && (File.getName().equals("Description.html") || File.getName().equals("description.html"))){
@@ -106,7 +113,7 @@ public class MenuPrincipal extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Description.class);
                         //envoyer donnée a l'activité description
                         intent.putExtra("cheminDescription", fichier.getName());
-                        intent.putExtra("directoryName", DirectoryName);
+                        intent.putExtra("directoryName", DIRECTORYNAME);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(),getString(R.string.AucuneDescription),Toast.LENGTH_SHORT).show();
@@ -162,7 +169,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
         if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
             // Le périphérique de stockage externe existe (carte SD/cleUSB)
-            File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName);
+            File dossier = new File(Environment.getExternalStorageDirectory().getPath()+"/"+DIRECTORYNAME);
             if(dossier.exists() && dossier.isDirectory()) DirectoryExist = true;
                 if(dossier.listFiles() != null) if(dossier.listFiles().length != 0) DirectoryEmpty = false;
             Log.d("checkAppDirectory", "exist:"+DirectoryExist+" empty: "+DirectoryEmpty);
@@ -185,7 +192,7 @@ public class MenuPrincipal extends AppCompatActivity {
                     .setPositiveButton(R.string.closeApp, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             if(!DirectoryExist){
-                                if(!new File(Environment.getExternalStorageDirectory().getPath()+"/"+DirectoryName).mkdirs()) Log.d("checkAppDirectory","pas cree");
+                                if(!new File(Environment.getExternalStorageDirectory().getPath()+"/"+DIRECTORYNAME).mkdirs()) Log.d("checkAppDirectory","pas cree");
                             }
                             finish();
                             System.exit(0);
@@ -205,18 +212,20 @@ public class MenuPrincipal extends AppCompatActivity {
     protected void onResume() { //permet a l'app de capturer les interruption nfc a la place du systeme
         super.onResume();
         checkAppDirectory();
-        Intent intent = new Intent(this, MenuPrincipal.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        IntentFilter[] intentFilters = new IntentFilter[]{};
-        if(nfcReady){
-            adapterNFC.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
-        }
-    }
 
-    @Override
-    protected void onPause() {  //rend la main au systeme pour la puce nfc
-        super.onPause();
-        //nfcAdapter.disableForegroundDispatch(this);
+        Intent intent = getIntent();
+
+        String tagID = NFCreadingIntent(intent);
+        File artDitectory = tagManager.findTag(tagID);
+
+        if (artDitectory == null){
+            Toast.makeText(getApplicationContext(),R.string.UnknowTAG,Toast.LENGTH_SHORT).show();
+        } else {
+            Intent contenuIntent = new Intent(getApplicationContext(),ContenuOeuvre.class);
+            contenuIntent.putExtra("tagID",tagID);
+            contenuIntent.putExtra("artDirectory",artDitectory);
+            startActivity(contenuIntent);
+        }
     }
 
     /**
@@ -302,46 +311,31 @@ public class MenuPrincipal extends AppCompatActivity {
         }
         builder.show();
     }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
-            String texte = getTextFromNdefRecord(intent);
-            if(texte == null){
-                Toast.makeText(getApplicationContext(),R.string.ErreurTAG,Toast.LENGTH_LONG).show();
-            }else{
-                //switchAct(texte);
-            }
 
-        }
-
-    }
-
-    public String getTextFromNdefRecord(Intent intent){ //Renvoi le contenu texte de la puce nfc
-        String tagContent = null;
-        Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_TAG);
-        if(parcelables == null){
-            Log.e("getTextFromNdefRecord", "Erreur lors de la lecture du tag NFC");
-        }else{
-            NdefMessage ndefMessage = (NdefMessage) parcelables[0] ;
-            NdefRecord[] ndefRecords = ndefMessage.getRecords();
-            NdefRecord ndefRecord = ndefRecords[0];
-
-            try {
-                byte[] payload = ndefRecord.getPayload();
-                String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
-                int languageSize = payload[0] & 0063;
-                tagContent = new String(payload, languageSize + 1,
-                        payload.length - languageSize - 1, textEncoding);
-            } catch (UnsupportedEncodingException e) {
-                Log.e("getTextFromNdefRecord", e.getMessage(), e);
+    /**
+     * permet de lire le contenu du Tag NFC scanné
+     * @param intent contient les données du NFC dans un Intent (classe qui permet de passer d'une activité à une autre)
+     * @return retourne l'ID du tag scanné
+     */
+    private String NFCreadingIntent(Intent intent) {
+        String action = intent.getAction();
+        Log.d("(ScanMenu)","intent capturé, action:"+action);
+        StringBuilder idTag = new StringBuilder();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            Log.d("(ScanMenu)","Action du TAG capturée");
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            if(tag != null){
+                byte[] tagId = tag.getId();
+                for(int i=0; i<tagId.length; i++){
+                    idTag.append(Integer.toHexString(tagId[i] & 0xFF)).append(" ");
+                }
+                //supprimer l'espace en trop
+                idTag.delete(idTag.length()-1,idTag.length());
             }
         }
-
-        Log.v("NFCTAG", "ID NFC:"+tagContent);
-
-        return tagContent;
+        return idTag.toString();
     }
+
 
     // ------------------------------------- END NFC ZONE ----------------------------------------------
 

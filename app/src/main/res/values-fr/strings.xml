@@ -25,4 +25,5 @@
     <string name="NFCDisabled">NFC desactivé</string>
     <string name="NFCDisabledMessage">Le NFC est desactivé. Activez le NFC dans les paramètres de l\'appareil</string>
     <string name="GoNFCSettings">Ouvrir paramètres NFC</string>
+    <string name="UnknowTAG">TAG NFC non répertorié</string>
 </resources>
