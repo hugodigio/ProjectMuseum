@@ -13,16 +13,27 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class TagManager {
+
+
+    private final static String TAG_FILENAME = "+tag.txt";
+    private final static String HISTORY_NAME = "TagsHistory.txt";
+
+    private File tagsDirectory;
 
     final static int ID_DELETE = 1;
     final static int ID_ADD = 2;
     final static int ID_MODIFY = 3;
-    final static String TAG_FILENAME = "+tag.txt";
 
-    private File tagsDirectory;
 
     public TagManager(String pathInSDcard){
         tagsDirectory = new File(Environment.getExternalStorageDirectory() + "/" + pathInSDcard);
@@ -250,6 +261,76 @@ public class TagManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    /* GESTION DE L'HISTORIQUE DES TAG */
+
+    /**
+     * lit le fichier historique et renvoi une pile contenant tout les dossiers d'oeuvres deja lus jusqu'à présent
+     * @return pile contenant tout les repertoires d'oeuvres déjà lus
+     */
+    public ArrayDeque<File> getHistorique() {
+        ArrayDeque<File> historique = new ArrayDeque<>();
+        checkHistoryFile();
+        File historiqueDirectory = new File(tagsDirectory.toString()+"/"+HISTORY_NAME);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(historiqueDirectory));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                File currentFile = new File(line);
+                if(currentFile.exists()){
+                    for(File file: currentFile.listFiles()){
+                        if(file.getName().equals(TAG_FILENAME)){
+                            historique.push(currentFile);
+                        }
+                    }
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return historique;
+    }
+
+    /**
+     * vérifie la présence du fichier d'historique
+     */
+    private void checkHistoryFile() {
+        File historiqueDirectory = new File(tagsDirectory.toString()+"/"+HISTORY_NAME);
+        if(!historiqueDirectory.exists()) {
+            try {
+                Log.d("(TagManager)","creation du fichier historique reussi ?"+historiqueDirectory.createNewFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * ajoute le dossier du tag lu dans l'historique
+     * @param artDitectory dossier du tag lu
+     */
+    //Amelioration possible: en prenant en compte ceux qui ont deja été ajouté auparavant
+    public void addHistory(File artDitectory){
+        checkHistoryFile();
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tagsDirectory.toString()+"/"+HISTORY_NAME, true)));
+            out.println(artDitectory.toString());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearHistory(){
+        File history = new File(tagsDirectory.toString()+"/"+HISTORY_NAME);
+        if(history.exists())
+            if (history.delete())
+                checkHistoryFile();
 
     }
 }

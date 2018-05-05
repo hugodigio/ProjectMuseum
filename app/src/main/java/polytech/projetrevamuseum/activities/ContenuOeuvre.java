@@ -1,18 +1,23 @@
-package polytech.projetrevamuseum;
+package polytech.projetrevamuseum.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
-import polytech.projetrevamuseum.activities.MenuPrincipal;
+import java.io.File;
 
+import polytech.projetrevamuseum.R;
 public class ContenuOeuvre extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contenu_oeuvre);
+
+        TextView title = findViewById(R.id.titleContenu);
+        title.setText(getIntent().getExtras().getString("artDirectory", "Erreur"));
+
     }
 
     @Override

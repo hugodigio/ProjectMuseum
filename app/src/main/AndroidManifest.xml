@@ -52,7 +52,9 @@
         <activity
             android:name=".activities.Description"
             android:label="@string/DescriptionTitle" />
-        <activity android:name=".ContenuOeuvre"></activity>
+        <activity android:name=".activities.ContenuOeuvre" />
+        <activity android:name=".activities.HistoriqueTAGs"
+            android:label="@string/historique"/>
     </application>
 
 </manifest>

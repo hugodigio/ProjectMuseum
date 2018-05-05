@@ -2,18 +2,14 @@ package polytech.projetrevamuseum.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcA;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,14 +20,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
 
-import polytech.projetrevamuseum.ContenuOeuvre;
 import polytech.projetrevamuseum.R;
 import polytech.projetrevamuseum.TagManager;
-
-import static android.os.Environment.getExternalStorageDirectory;
 
 public class MenuPrincipal extends AppCompatActivity {
     private NfcAdapter adapterNFC;
@@ -132,7 +123,9 @@ public class MenuPrincipal extends AppCompatActivity {
     private class listenerBoutonHistorique implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Toast.makeText(getApplicationContext(),R.string.ComingSoon,Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), HistoriqueTAGs.class);
+            intent.putExtra("directoryName",DIRECTORYNAME);
+            startActivity(intent);
         }
     }
 
@@ -209,42 +202,57 @@ public class MenuPrincipal extends AppCompatActivity {
     // ------------------------------------ BEGIN NFC ZONE ---------------------------------------------
 
     @Override
-    protected void onResume() { //permet a l'app de capturer les interruption nfc a la place du systeme
+    protected void onResume() { //executé a chaque fois que l'application est lancée (par l'utilisateur ou par le lecteur NFC)
         super.onResume();
         checkAppDirectory();
+        NFCinit();
+
+        /*
+        onResume() est appelé quand on lance / relance l'appli
+        la fonction est donc aussi appelée quand on scan un NFC puisque, lorsque l'on scan un NFC, l'appli s'ouvre.
+
+        la condition ci-dessous permet de traiter le TAG NFC, seulement si on viens d'ouvrir l'appli via le scan d'un tag NFC
+
+        l'action qui a engendré l'ouverture de l'appli est stocké dans la variable "action"
+        */
 
         Intent intent = getIntent();
+        String action = intent.getAction();
 
-        String tagID = NFCreadingIntent(intent);
-        File artDitectory = tagManager.findTag(tagID);
-
-        if (artDitectory == null){
-            Toast.makeText(getApplicationContext(),R.string.UnknowTAG,Toast.LENGTH_SHORT).show();
-        } else {
-            Intent contenuIntent = new Intent(getApplicationContext(),ContenuOeuvre.class);
-            contenuIntent.putExtra("tagID",tagID);
-            contenuIntent.putExtra("artDirectory",artDitectory);
-            startActivity(contenuIntent);
+        if(action != null && (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED) || action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED))){
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            String tagID = getIDTag(tag);
+            File artDirectory = tagManager.findTag(tagID);
+            if (artDirectory == null){
+                Toast.makeText(getApplicationContext(),R.string.UnknowTAG,Toast.LENGTH_SHORT).show();
+            } else {
+                Intent contenuIntent = new Intent(getApplicationContext(),ContenuOeuvre.class);
+                contenuIntent.putExtra("artDirectory",artDirectory.getPath());
+                startActivity(contenuIntent);
+                tagManager.addHistory(artDirectory);
+            }
         }
+
     }
 
     /**
      * Initialise la classe qui fait la relation avec la puce NFC, et vérifie si le NFC est présent
      * sur cet appareil ou si il est acivé.
      */
+
     private void NFCinit(){
         //récupere les information de la puce NFC
         adapterNFC = NfcAdapter.getDefaultAdapter(this);
 
         //test la presence du NFC ou son activation
         if(adapterNFC == null){
-            nfcReady = false;
             //NFC absent sur l'appareil
+            nfcReady = false;
             Toast.makeText(getApplicationContext(),R.string.NoNFC, Toast.LENGTH_SHORT).show();
             NFCDialog(NFC_MISSING);
         } else if(!adapterNFC.isEnabled()){
-            nfcReady = false;
             //NFC present mais desactivé. Ouvre les parametres de l'appareil
+            nfcReady = false;
             NFCDialog(NFC_DISABLED);
         } else {
             nfcReady = true;
@@ -252,15 +260,11 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
 
-    private void NFCDialog(final int error){
-        NFCDialog(error, null, null);
-    }
     /**
      * Classe qui affiche une boite de dialogue a l'utilisateur en fonction du contexte rencontrée
      * @param error erreur rencontrée
-     * @return retourne un identifiant pouvant etre interpreté
      */
-    private void NFCDialog(final int error, final File artDirectory, final String tagID){
+    private void NFCDialog(final int error){
         String title = "";
         String message = "";
         String positiveButton = "";
@@ -314,25 +318,21 @@ public class MenuPrincipal extends AppCompatActivity {
 
     /**
      * permet de lire le contenu du Tag NFC scanné
-     * @param intent contient les données du NFC dans un Intent (classe qui permet de passer d'une activité à une autre)
+     * @param tag tag NFC dont on veut récupérer l'id
      * @return retourne l'ID du tag scanné
      */
-    private String NFCreadingIntent(Intent intent) {
-        String action = intent.getAction();
-        Log.d("(ScanMenu)","intent capturé, action:"+action);
+    private String getIDTag(Tag tag) {
         StringBuilder idTag = new StringBuilder();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            Log.d("(ScanMenu)","Action du TAG capturée");
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            if(tag != null){
-                byte[] tagId = tag.getId();
-                for(int i=0; i<tagId.length; i++){
-                    idTag.append(Integer.toHexString(tagId[i] & 0xFF)).append(" ");
+        if(tag != null){
+            byte[] tagId = tag.getId();
+            for(int i=0; i<tagId.length; i++){
+                idTag.append(Integer.toHexString(tagId[i] & 0xFF));
+                if(i+1 < tagId.length){
+                    idTag.append(" ");
                 }
-                //supprimer l'espace en trop
-                idTag.delete(idTag.length()-1,idTag.length());
             }
         }
+        Log.d("(MenuPrincipal)","getIDTag: tag: |"+idTag.toString()+"|");
         return idTag.toString();
     }
 

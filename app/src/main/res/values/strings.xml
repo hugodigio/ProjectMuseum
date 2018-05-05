@@ -43,4 +43,6 @@
     <string name="NFCDisabledMessage">NFC is disabled. Please enable NFC in system preferences.</string>
     <string name="GoNFCSettings">Go to NFC settings</string>
     <string name="UnknowTAG">TAG NFC non répertorié</string>
+    <string name="historique">Historique</string>
+    <string name="clearHistory">Clear history</string>
 </resources>
