@@ -123,8 +123,8 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est une video
                 if(file.getName().endsWith(".mp4") || file.getName().endsWith(".avi")) {
-                    final ImageButton button = findViewById(R.id.imageButton);
-                    button.setImageResource(getResources().getIdentifier("play", "drawable", "polytech.projetrevamuseum"));
+                    Button button = new Button(this);
+                    button.setText(file.getName());
                     scmedia.addView(button);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
