@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,10 +73,10 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est une image
                 if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")){
-                    Button button = new Button(this);
-                    button.setText(file.getName());
-                    scmedia.addView(button);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    ImageButton imgBut = new ImageButton(this);
+                    imgBut.setImageResource(getResources().getIdentifier("image", "drawable", "polytech.projetrevamuseum"));
+                    scmedia.addView(imgBut);
+                    imgBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             hideAll();
@@ -91,10 +90,10 @@ public class ArtWork extends AppCompatActivity {
                 //Le fichier est un texte
                 if(file.getName().endsWith(".txt") || file.getName().endsWith(".html") || file.getName().endsWith(".xml")) {
 
-                    Button button = new Button(this);
-                    button.setText(file.getName());
-                    scmedia.addView(button);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    ImageButton textBut = new ImageButton(this);
+                    textBut.setImageResource(getResources().getIdentifier("texte", "drawable", "polytech.projetrevamuseum"));
+                    scmedia.addView(textBut);
+                    textBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             hideAll();
@@ -123,10 +122,10 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est une video
                 if(file.getName().endsWith(".mp4") || file.getName().endsWith(".avi")) {
-                    Button button = new Button(this);
-                    button.setText(file.getName());
-                    scmedia.addView(button);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    ImageButton vidBut = new ImageButton(this);
+                    vidBut.setImageResource(getResources().getIdentifier("video", "drawable", "polytech.projetrevamuseum"));
+                    scmedia.addView(vidBut);
+                    vidBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             hideAll();
@@ -140,10 +139,10 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est un audio
                 if(file.getName().endsWith(".mp3") || file.getName().endsWith(".wav")) {
-                    Button button = new Button(this);
-                    button.setText(file.getName());
-                    scmedia.addView(button);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    ImageButton audBut = new ImageButton(this);
+                    audBut.setImageResource(getResources().getIdentifier("audio", "drawable", "polytech.projetrevamuseum"));
+                    scmedia.addView(audBut);
+                    audBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             hideAll();
@@ -157,10 +156,11 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est un modele 3D
                 if(file.getName().endsWith(".obj")){
-                    Button button = new Button(this);
-                    button.setText(file.getName());
-                    scmedia.addView(button);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    ImageButton troisdBut= new ImageButton(this) ;
+                    troisdBut.setImageResource(getResources().getIdentifier("troisd", "drawable", "polytech.projetrevamuseum"));
+                    scmedia.addView(troisdBut);
+
+                    troisdBut.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             hideAll();
