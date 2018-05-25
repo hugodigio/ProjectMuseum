@@ -3,7 +3,6 @@ package polytech.projetrevamuseum.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -11,25 +10,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import polytech.projetrevamuseum.Obj3DView;
 import polytech.projetrevamuseum.R;
 
 public class ArtWork extends AppCompatActivity {
@@ -129,8 +123,8 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est une video
                 if(file.getName().endsWith(".mp4") || file.getName().endsWith(".avi")) {
-                    Button button = new Button(this);
-                    button.setText(file.getName());
+                    final ImageButton button = findViewById(R.id.imageButton);
+                    button.setImageResource(getResources().getIdentifier("play", "drawable", "polytech.projetrevamuseum"));
                     scmedia.addView(button);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
