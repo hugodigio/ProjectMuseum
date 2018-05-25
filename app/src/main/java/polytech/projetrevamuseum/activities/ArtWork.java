@@ -3,6 +3,7 @@ package polytech.projetrevamuseum.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,7 +67,7 @@ public class ArtWork extends AppCompatActivity {
 
     public void listeMedia(){
         LinearLayout scmedia=findViewById(R.id.ListMediaLayout);
-
+        String name;
 
         for(final File file : artDirectory.listFiles()){
 
@@ -73,8 +75,16 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est une image
                 if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg") || file.getName().endsWith(".jpeg")){
-                    ImageButton imgBut = new ImageButton(this);
-                    imgBut.setImageResource(getResources().getIdentifier("image", "drawable", "polytech.projetrevamuseum"));
+                    if (file.getName().endsWith(".jpeg")){
+                        name=file.getName().substring(0,file.getName().length()-5);
+                    }
+                    else{
+                        name=file.getName().substring(0,file.getName().length()-4);
+                    }
+                    Button imgBut = new Button(this);
+                    Drawable top = getResources().getDrawable(R.drawable.image);
+                    imgBut.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                    imgBut.setText(name);
                     scmedia.addView(imgBut);
                     imgBut.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -89,41 +99,54 @@ public class ArtWork extends AppCompatActivity {
                 }
                 //Le fichier est un texte
                 if(file.getName().endsWith(".txt") || file.getName().endsWith(".html") || file.getName().endsWith(".xml")) {
+                    if (file.getName()!="tag.txt") {
 
-                    ImageButton textBut = new ImageButton(this);
-                    textBut.setImageResource(getResources().getIdentifier("texte", "drawable", "polytech.projetrevamuseum"));
-                    scmedia.addView(textBut);
-                    textBut.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            hideAll();
-                            ScrollView layout_Texte = findViewById(R.id.LayoutTexte);
-                            TextView TextViewText= findViewById(R.id.TextViewText);
-
-                            StringBuilder description = new StringBuilder();
-                            try{
-                                BufferedReader br = new BufferedReader(new FileReader(file));
-                                String line;
-
-                                while ((line = br.readLine()) != null) {
-                                    description.append(line);
-                                    description.append('\n');
-                                }
-                                br.close();
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            TextViewText.setText(Html.fromHtml(description.toString()));
-                            layout_Texte.setVisibility(View.VISIBLE);
+                        if (file.getName().endsWith(".html")){
+                            name=file.getName().substring(0,file.getName().length()-5);
                         }
-                    });
+                        else{
+                            name=file.getName().substring(0,file.getName().length()-4);
+                        }
+
+                        Button textBut = new Button(this);
+                        Drawable top = getResources().getDrawable(R.drawable.texte);
+                        textBut.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                        textBut.setText(name);
+                        scmedia.addView(textBut);
+                        textBut.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                hideAll();
+                                ScrollView layout_Texte = findViewById(R.id.LayoutTexte);
+                                TextView TextViewText = findViewById(R.id.TextViewText);
+
+                                StringBuilder description = new StringBuilder();
+                                try {
+                                    BufferedReader br = new BufferedReader(new FileReader(file));
+                                    String line;
+
+                                    while ((line = br.readLine()) != null) {
+                                        description.append(line);
+                                        description.append('\n');
+                                    }
+                                    br.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                TextViewText.setText(Html.fromHtml(description.toString()));
+                                layout_Texte.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
                 }
 
                 //Le fichier est une video
                 if(file.getName().endsWith(".mp4") || file.getName().endsWith(".avi")) {
-                    ImageButton vidBut = new ImageButton(this);
-                    vidBut.setImageResource(getResources().getIdentifier("video", "drawable", "polytech.projetrevamuseum"));
+                    name=file.getName().substring(0,file.getName().length()-4);
+                    Button vidBut = new Button(this);
+                    Drawable top = getResources().getDrawable(R.drawable.video);
+                    vidBut.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                    vidBut.setText(name);
                     scmedia.addView(vidBut);
                     vidBut.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -139,8 +162,12 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est un audio
                 if(file.getName().endsWith(".mp3") || file.getName().endsWith(".wav")) {
-                    ImageButton audBut = new ImageButton(this);
-                    audBut.setImageResource(getResources().getIdentifier("audio", "drawable", "polytech.projetrevamuseum"));
+                    name=file.getName().substring(0,file.getName().length()-4);
+
+                    Button audBut = new Button(this);
+                    Drawable top = getResources().getDrawable(R.drawable.audio);
+                    audBut.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                    audBut.setText(name);
                     scmedia.addView(audBut);
                     audBut.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -156,8 +183,11 @@ public class ArtWork extends AppCompatActivity {
 
                 //Le fichier est un modele 3D
                 if(file.getName().endsWith(".obj")){
-                    ImageButton troisdBut= new ImageButton(this) ;
-                    troisdBut.setImageResource(getResources().getIdentifier("troisd", "drawable", "polytech.projetrevamuseum"));
+                    name=file.getName().substring(0,file.getName().length()-4);
+                    Button troisdBut = new Button(this);
+                    Drawable top = getResources().getDrawable(R.drawable.troisd);
+                    troisdBut.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                    troisdBut.setText(name);
                     scmedia.addView(troisdBut);
 
                     troisdBut.setOnClickListener(new View.OnClickListener() {

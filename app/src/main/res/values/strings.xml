@@ -34,5 +34,5 @@
     <string name="DescriptionTitle">Museum Description</string>
     <string name="planTitle">Museum map</string>
     <string name="MainMenu">Main Menu</string>
-    <string name="ScrollMedia">Scrollez pour voir la liste des médias</string>
+    <string name="ScrollMedia">Scroll to see the media list</string>
 </resources>
