@@ -2,6 +2,7 @@ package polytech.projetrevamuseum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
@@ -22,6 +23,7 @@ public class Obj3DView extends RendererActivity {
         Intent intent = getIntent();
         identity = intent.getStringExtra(Main2Activity.EXTRA_MESSAGE);
         rawPath = extras.getString("raw_path");
+        Log.v("fzf",identity);
     }
 
     private Object3dContainer faceObject3D;

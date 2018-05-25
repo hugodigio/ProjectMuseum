@@ -77,7 +77,7 @@ public class Main2Activity extends AppCompatActivity {
                     int rawResId = getResources().getIdentifier(identity, "raw", "polytech.projetrevamuseum");
                     if(rawResId != 0){
                         Uri pathzik = Uri.parse("android.resource://polytech.projetrevamuseum/" + rawResId);
-                        mp = MediaPlayer.create(Main2Activity.this, pathzik );
+                        mp = MediaPlayer.create(Main2Activity.this, pathzik ); //GetApplicationContext
                     }
                 }
                 if(mp.isPlaying()){

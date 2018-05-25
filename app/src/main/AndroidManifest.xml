@@ -3,7 +3,9 @@
     package="polytech.projetrevamuseum">
 
     <uses-permission android:name="android.permission.NFC" />
+
     <uses-feature android:name="android.hardware.nfc" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -15,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.Plan"
-            android:label="@string/planTitle"/>
+            android:label="@string/planTitle" />
         <activity
             android:name=".activities.Main2Activity"
             android:label="@string/title_activity_main2"
@@ -30,17 +32,25 @@
             android:name=".Obj3DView"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activities.MenuPrincipal"
+        <activity
+            android:name=".activities.MenuPrincipal"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".activities.Description"
+            android:label="@string/DescriptionTitle" />
+        <activity android:name=".activities.ArtWork"
+            android:label="Oeuvre"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Description"
-            android:label="@string/DescriptionTitle"/>
     </application>
 
 </manifest>

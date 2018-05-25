@@ -30,7 +30,7 @@ public class Description extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
 
-        //récupérer la valeur envoyé de l'activité précédente
+        //récupérer la valeur envoyée de l'activité précédente
         //contient l'url de la description
         String descriptionPath = getIntent().getExtras().getString("cheminDescription","defaultKey");
         String directoryName = getIntent().getExtras().getString("directoryName","defaultKey");
