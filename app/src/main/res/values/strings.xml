@@ -45,4 +45,5 @@
     <string name="UnknowTAG">TAG NFC non répertorié</string>
     <string name="historique">Historique</string>
     <string name="clearHistory">Clear history</string>
+    <string name="ScrollMedia">Scroll horizontally to see all medias</string>
 </resources>

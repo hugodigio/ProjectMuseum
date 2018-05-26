@@ -13,8 +13,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,7 +70,9 @@ public class Plan extends AppCompatActivity {
 
     public void addBouton(String ButtonName, final File ImageSrc){
         Button button = new Button(this);
-        //button.setLayoutParams(new LinearLayout.LayoutParams());
+        int hauteur = 100;
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, hauteur, getResources().getDisplayMetrics());
+        button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height));
         button.setText(ButtonName);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
