@@ -25,14 +25,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import polytech.projetrevamuseum.Obj3DView;
 import polytech.projetrevamuseum.R;
 
 public class ArtWork extends AppCompatActivity {
 
-
     //Dossier de l'Oeuvre
     File artDirectory;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +98,7 @@ public class ArtWork extends AppCompatActivity {
                 }
                 //Le fichier est un texte
                 if(file.getName().endsWith(".txt") || file.getName().endsWith(".html") || file.getName().endsWith(".xml")) {
-                    if (file.getName()!="tag.txt") {
+                    if (file.getName().equals("+tag.txt")) {
 
                         if (file.getName().endsWith(".html")){
                             name=file.getName().substring(0,file.getName().length()-5);
@@ -195,10 +194,8 @@ public class ArtWork extends AppCompatActivity {
                         public void onClick(View v) {
                             hideAll();
 
-                            Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
-
-                            intent.setDataAndType(Uri.fromFile(file), "text/plain");
+                            Intent intent = new Intent(getApplicationContext(), Obj3DView.class);
+                            intent.putExtra(Main2Activity.EXTRA_MESSAGE, file.getPath());
                             startActivity(intent);
                         }
                     });

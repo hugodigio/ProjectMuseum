@@ -6,12 +6,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
+import min3d.parser.Parser;
 import polytech.projetrevamuseum.activities.Main2Activity;
-import polytech.projetrevamuseum.min3d.core.Object3dContainer;
-import polytech.projetrevamuseum.min3d.core.RendererActivity;
-import polytech.projetrevamuseum.min3d.parser.IParser;
-import polytech.projetrevamuseum.min3d.parser.Parser;
-import polytech.projetrevamuseum.min3d.vos.Light;
+import min3d.core.Object3dContainer;
+import min3d.core.RendererActivity;
+import min3d.parser.IParser;
+import min3d.parser.Parser;
+import min3d.vos.Light;
 
 
 public class Obj3DView extends RendererActivity {
@@ -49,8 +50,8 @@ public class Obj3DView extends RendererActivity {
 
 
         scene.lights().add(myLight);
-
-        IParser myParser = Parser.createParser(Parser.Type.OBJ, getResources(), "gouinquang.projetrevamuseum:raw/" + identity +"_obj",true);
+        Parser.sdcard=true;
+        IParser myParser = Parser.createParser(Parser.Type.OBJ, identity,true);
 
         myParser.parse();
 
