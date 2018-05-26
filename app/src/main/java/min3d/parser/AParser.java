@@ -163,7 +163,7 @@ public abstract class AParser implements IParser {
 		public float vScale;
 		public boolean useForAtlasDimensions;
 		
-		
+
 		public BitmapAsset(String key, String resourceID)
 		{
 			this.key = key;
