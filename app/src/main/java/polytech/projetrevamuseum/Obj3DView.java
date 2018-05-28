@@ -24,7 +24,6 @@ public class Obj3DView extends RendererActivity {
         Intent intent = getIntent();
         identity = intent.getStringExtra(Main2Activity.EXTRA_MESSAGE);
         rawPath = extras.getString("raw_path");
-        Log.v("fzf",identity);
     }
 
     private Object3dContainer faceObject3D;
@@ -51,6 +50,7 @@ public class Obj3DView extends RendererActivity {
 
         scene.lights().add(myLight);
         Parser.sdcard=true;
+
         IParser myParser = Parser.createParser(Parser.Type.OBJ, identity,true);
 
         myParser.parse();
