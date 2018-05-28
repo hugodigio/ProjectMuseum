@@ -6,11 +6,11 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import polytech.projetrevamuseum.activities.Main2Activity;
-import polytech.projetrevamuseum.min3d.core.Object3dContainer;
-import polytech.projetrevamuseum.min3d.core.RendererActivity;
-import polytech.projetrevamuseum.min3d.parser.IParser;
-import polytech.projetrevamuseum.min3d.parser.Parser;
-import polytech.projetrevamuseum.min3d.vos.Light;
+import min3d.core.Object3dContainer;
+import min3d.core.RendererActivity;
+import min3d.parser.IParser;
+import min3d.parser.Parser;
+import min3d.vos.Light;
 
 
 public class Obj3DView extends RendererActivity {
@@ -47,8 +47,8 @@ public class Obj3DView extends RendererActivity {
 
 
         scene.lights().add(myLight);
-
-        IParser myParser = Parser.createParser(Parser.Type.OBJ, getResources(), "gouinquang.projetrevamuseum:raw/" + identity +"_obj",true);
+        Parser.sdcard=true;
+        IParser myParser = Parser.createParser(Parser.Type.OBJ, identity,true);
 
         myParser.parse();
 
@@ -75,8 +75,8 @@ public class Obj3DView extends RendererActivity {
             touchedY = event.getY();
         } else if (event.getAction() == MotionEvent.ACTION_MOVE)
         {
-            xAngle += (touchedX - event.getX())/2f;
-            yAngle += (touchedY - event.getY())/2f;
+            xAngle += (touchedX - event.getX())/3f;
+            yAngle += (touchedY - event.getY())/3f;
 
             touchedX = event.getX();
             touchedY = event.getY();
@@ -87,8 +87,8 @@ public class Obj3DView extends RendererActivity {
     @Override
     public void updateScene() {
         faceObject3D.scale().x = faceObject3D.scale().y = faceObject3D.scale().z = myscale;
-        faceObject3D.rotation().x = xAngle;
-        faceObject3D.rotation().z = yAngle;
+        faceObject3D.rotation().x = -yAngle;
+        faceObject3D.rotation().z = -xAngle;
     }
 
     private class ScaleListener
@@ -98,7 +98,7 @@ public class Obj3DView extends RendererActivity {
             myscale *= detector.getScaleFactor();
 
             // Don't let the object get too small or too large.
-            myscale = Math.max(0.1f, Math.min(myscale, 5.0f));
+            myscale = Math.max(0.01f, Math.min(myscale, 5.0f));
 
             //invalidate();
             return true;
